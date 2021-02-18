@@ -1,0 +1,12 @@
+modLoader="javafml"
+loaderVersion="[36,)"
+license="All rights reserved"
+
+[[mods]]
+	modId="minecraftmadness"
+	version="1.0"
+	displayName="Minecraft Madness Mod"
+	authors="TurtyWurty"
+	description='''
+	A kitchen sink mod that I work on when I am bored.
+	'''
