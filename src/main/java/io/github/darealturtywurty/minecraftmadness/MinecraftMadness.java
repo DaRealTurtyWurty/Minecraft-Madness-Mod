@@ -32,6 +32,7 @@ public class MinecraftMadness {
 		bus.addListener(this::setup);
 
 		ItemInit.ITEMS.register(bus);
+		BlockInit.registerArmchairs();
 		BlockInit.BLOCKS.register(bus);
 		TileEntityInit.TILE_ENTITIES.register(bus);
 		ContainerInit.CONTAINERS.register(bus);

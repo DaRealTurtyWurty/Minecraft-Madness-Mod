@@ -31,7 +31,7 @@ public class ItemInit {
 	@SubscribeEvent
 	public static void registerBlockItems(final Register<Item> event) {
 		final IForgeRegistry<Item> registry = event.getRegistry();
-		final Set<RegistryObject<Block>> blacklist = new HashSet<>();
+		final Set<RegistryObject<? extends Block>> blacklist = new HashSet<>();
 		blacklist.add(BlockInit.BIRD_BATH);
 
 		BlockInit.BLOCKS.getEntries().stream().filter(block -> !blacklist.contains(block)).map(RegistryObject::get)

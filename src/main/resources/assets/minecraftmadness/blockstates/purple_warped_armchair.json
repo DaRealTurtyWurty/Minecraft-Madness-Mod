@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "y": 90,
+      "model": "minecraftmadness:block/purple_warped_armchair"
+    },
+    "facing=south": {
+      "y": 180,
+      "model": "minecraftmadness:block/purple_warped_armchair"
+    },
+    "facing=north": {
+      "model": "minecraftmadness:block/purple_warped_armchair"
+    },
+    "facing=west": {
+      "y": 270,
+      "model": "minecraftmadness:block/purple_warped_armchair"
+    }
+  }
+}

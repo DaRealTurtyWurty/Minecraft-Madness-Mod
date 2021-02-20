@@ -2,7 +2,9 @@ package io.github.darealturtywurty.minecraftmadness.client;
 
 import static io.github.darealturtywurty.minecraftmadness.MinecraftMadness.MODID;
 
+import io.github.darealturtywurty.minecraftmadness.client.entity.render.SeatRenderer;
 import io.github.darealturtywurty.minecraftmadness.core.init.BlockInit;
+import io.github.darealturtywurty.minecraftmadness.core.init.EntityInit;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
@@ -15,12 +17,15 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockDisplayReader;
 import net.minecraft.world.biome.BiomeColors;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
+@OnlyIn(Dist.CLIENT)
 public class ClientEvents {
 	@EventBusSubscriber(modid = MODID, bus = Bus.MOD, value = Dist.CLIENT)
 	public static class ModEvents {
@@ -71,6 +76,6 @@ public class ClientEvents {
 	}
 
 	static void bindRenderers() {
-
+		RenderingRegistry.registerEntityRenderingHandler(EntityInit.SEAT.get(), SeatRenderer::new);
 	}
 }

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraftmadness:block/armchair",
+  "textures": {
+    "wool": "block/blue_wool",
+    "planks": "block/jungle_planks"
+  }
+}
