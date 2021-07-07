@@ -1,0 +1,10 @@
+{
+  "type": "minecraftmadness:chopping",
+  "input": {
+    "item": "minecraft:cooked_mutton"
+  },
+  "output": {
+    "item": "minecraftmadness:cooked_mutton_strip",
+    "count": 3
+  }
+}

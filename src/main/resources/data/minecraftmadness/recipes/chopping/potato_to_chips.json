@@ -1,0 +1,10 @@
+{
+  "type": "minecraftmadness:chopping",
+  "input": {
+    "item": "minecraft:potato"
+  },
+  "output": {
+    "item": "minecraftmadness:potato_chip",
+    "count": 8
+  }
+}

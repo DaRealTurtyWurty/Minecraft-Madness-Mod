@@ -1,0 +1,10 @@
+{
+  "type": "minecraftmadness:chopping",
+  "input": {
+    "item": "minecraft:carrot"
+  },
+  "output": {
+    "item": "minecraftmadness:carrot_slice",
+    "count": 3
+  }
+}

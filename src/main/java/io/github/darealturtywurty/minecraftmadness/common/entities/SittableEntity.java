@@ -31,30 +31,30 @@ public class SittableEntity extends Entity {
 	public void tick() {
 		super.tick();
 		if (this.seat == null) {
-			this.seat = this.getEntityWorld().getBlockState(this.getPosition());
-			if (this.seat == null || this.seat.isAir(this.getEntityWorld(), this.getPosition())) {
+			this.seat = this.getCommandSenderWorld().getBlockState(this.blockPosition());
+			if (this.seat == null || this.seat.isAir()) {
 				this.remove();
 			}
 		}
 	}
 
 	@Override
-	protected void registerData() {
+	protected void defineSynchedData() {
 
 	}
 
 	@Override
-	protected void readAdditional(CompoundNBT compound) {
+	protected void readAdditionalSaveData(CompoundNBT compound) {
 
 	}
 
 	@Override
-	protected void writeAdditional(CompoundNBT compound) {
+	protected void addAdditionalSaveData(CompoundNBT compound) {
 
 	}
 
 	@Override
-	protected boolean canBeRidden(Entity entityIn) {
+	protected boolean canRide(Entity entityIn) {
 		return entityIn instanceof PlayerEntity;
 	}
 
@@ -64,55 +64,55 @@ public class SittableEntity extends Entity {
 	}
 
 	@Override
-	public boolean canCollide(Entity entity) {
+	public boolean canCollideWith(Entity entity) {
 		return false;
 	}
 
 	@Override
-	public void applyEntityCollision(Entity entityIn) {
+	public void push(Entity entityIn) {
 
 	}
 
 	@Override
-	public boolean canBeCollidedWith() {
+	public boolean isPickable() {
 		return false;
 	}
 
 	@Override
-	protected void doBlockCollisions() {
+	protected void checkInsideBlocks() {
 
 	}
 
 	@Override
-	public void onCollideWithPlayer(PlayerEntity entityIn) {
+	public void playerTouch(PlayerEntity entityIn) {
 
 	}
 
 	@Override
-	public float getCollisionBorderSize() {
+	public float getPickRadius() {
 		return 0.0f;
 	}
 
 	@Override
-	public IPacket<?> createSpawnPacket() {
+	public IPacket<?> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 
 	@Override
-	public double getMountedYOffset() {
+	public double getPassengersRidingOffset() {
 		return 0.25D;
 	}
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public void updatePassenger(Entity passenger) {
-		super.updatePassenger(passenger);
+	public void positionRider(Entity passenger) {
+		super.positionRider(passenger);
 		final float blockRotation = this.seat.hasProperty(BlockStateProperties.HORIZONTAL_FACING)
-				? this.seat.get(BlockStateProperties.HORIZONTAL_FACING).getHorizontalAngle()
+				? this.seat.getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot()
 				: 0.0f;
-		if (this.isPassenger(passenger)) {
+		if (this.hasPassenger(passenger)) {
 			float f = 0.0F;
-			float f1 = (float) ((this.removed ? (double) 0.01F : this.getMountedYOffset()) + passenger.getYOffset());
+			float f1 = (float) ((this.removed ? (double) 0.01F : this.getPassengersRidingOffset()) + passenger.getMyRidingOffset());
 			if (this.getPassengers().size() > 1) {
 				int i = this.getPassengers().indexOf(passenger);
 				if (i == 0) {
@@ -123,19 +123,31 @@ public class SittableEntity extends Entity {
 			}
 
 			Vector3d vector3d = (new Vector3d((double) f, 0.0D, 0.0D))
-					.rotateYaw(-this.rotationYaw * ((float) Math.PI / 180F) - ((float) Math.PI / 2F));
-			passenger.setPosition(this.getPosX() + vector3d.x, this.getPosY() + (double) f1, this.getPosZ() + vector3d.z);
-			passenger.setRotationYawHead(passenger.getRotationYawHead() + blockRotation);
+					.yRot(-this.yRot * ((float) Math.PI / 180F) - ((float) Math.PI / 2F));
+			passenger.setPos(this.getX() + vector3d.x, this.getY() + (double) f1, this.getZ() + vector3d.z);
+			passenger.setYHeadRot(passenger.getYHeadRot() + blockRotation);
 			this.applyYawToEntity(passenger);
 		}
 	}
 
 	protected void applyYawToEntity(Entity entityToUpdate) {
-		entityToUpdate.setRenderYawOffset(this.rotationYaw);
-		float f = MathHelper.wrapDegrees(entityToUpdate.rotationYaw - this.rotationYaw);
+		entityToUpdate.setYBodyRot(this.yRot);
+		float f = MathHelper.wrapDegrees(entityToUpdate.yRot - this.yRot);
 		float f1 = MathHelper.clamp(f, -75.0F, 75.0F);
-		entityToUpdate.prevRotationYaw += f1 - f;
-		entityToUpdate.rotationYaw += f1 - f;
-		entityToUpdate.setRotationYawHead(entityToUpdate.rotationYaw);
+		entityToUpdate.yRotO += f1 - f;
+		entityToUpdate.yRot += f1 - f;
+		entityToUpdate.setYHeadRot(entityToUpdate.yRot);
+	}
+
+	@Override
+	public boolean equals(Object object) {
+		if (!(object instanceof SittableEntity))
+			return false;
+		return super.equals(object) && this.seat.equals(((SittableEntity) object).seat);
+	}
+	
+	@Override
+	public int hashCode() {
+		return super.hashCode() + this.seat.hashCode();
 	}
 }

@@ -10,11 +10,15 @@ import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class EntityInit {
+public final class EntityInit {
+
+	private EntityInit() {
+		throw new IllegalAccessError("Attempted to construct initialization class!");
+	}
 
 	public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, MODID);
 
-	public static final RegistryObject<EntityType<?>> SEAT = ENTITIES.register("seat",
-			() -> EntityType.Builder.create(SittableEntity::new, EntityClassification.MISC).size(1f, 1f)
+	public static final RegistryObject<EntityType<SittableEntity>> SEAT = ENTITIES.register("seat",
+			() -> EntityType.Builder.<SittableEntity>of(SittableEntity::new, EntityClassification.MISC).sized(1f, 1f)
 					.build(new ResourceLocation(MODID, "seat").toString()));
 }

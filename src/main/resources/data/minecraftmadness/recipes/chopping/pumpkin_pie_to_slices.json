@@ -1,0 +1,10 @@
+{
+  "type": "minecraftmadness:chopping",
+  "input": {
+    "item": "minecraft:pumpkin_pie"
+  },
+  "output": {
+    "item": "minecraftmadness:pumpkin_pie_slice",
+    "count": 4
+  }
+}

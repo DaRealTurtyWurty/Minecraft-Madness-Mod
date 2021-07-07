@@ -1,0 +1,10 @@
+{
+  "type": "minecraftmadness:chopping",
+  "input": {
+    "item": "minecraft:porkchop"
+  },
+  "output": {
+    "item": "minecraftmadness:bacon",
+    "count": 3
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "type": "minecraftmadness:chopping",
+  "input": {
+    "item": "minecraft:cooked_cod"
+  },
+  "output": {
+    "item": "minecraftmadness:cooked_cod_fillet",
+    "count": 2
+  }
+}

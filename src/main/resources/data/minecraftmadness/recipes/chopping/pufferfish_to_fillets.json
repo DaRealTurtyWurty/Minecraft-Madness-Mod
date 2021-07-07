@@ -1,0 +1,10 @@
+{
+  "type": "minecraftmadness:chopping",
+  "input": {
+    "item": "minecraft:pufferfish"
+  },
+  "output": {
+    "item": "minecraftmadness:pufferfish_fillet",
+    "count": 2
+  }
+}

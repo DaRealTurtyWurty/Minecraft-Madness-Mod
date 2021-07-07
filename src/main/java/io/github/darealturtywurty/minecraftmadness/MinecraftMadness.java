@@ -8,7 +8,9 @@ import io.github.darealturtywurty.minecraftmadness.core.init.BlockInit;
 import io.github.darealturtywurty.minecraftmadness.core.init.ContainerInit;
 import io.github.darealturtywurty.minecraftmadness.core.init.EntityInit;
 import io.github.darealturtywurty.minecraftmadness.core.init.ItemInit;
+import io.github.darealturtywurty.minecraftmadness.core.init.RecipeInit;
 import io.github.darealturtywurty.minecraftmadness.core.init.TileEntityInit;
+import io.github.darealturtywurty.minecraftmadness.core.init.WorldTypeInit;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -22,7 +24,7 @@ public class MinecraftMadness {
 	public static final String MODID = "minecraftmadness";
 	public static final ItemGroup MADNESS_GROUP = new ItemGroup(MODID) {
 		@Override
-		public ItemStack createIcon() {
+		public ItemStack makeIcon() {
 			return BlockInit.BIRD_BATH.get().asItem().getDefaultInstance();
 		}
 	};
@@ -32,12 +34,14 @@ public class MinecraftMadness {
 		bus.addListener(this::setup);
 
 		ItemInit.ITEMS.register(bus);
-		BlockInit.registerArmchairs();
+		BlockInit.registerSpecialBlocks();
 		BlockInit.BLOCKS.register(bus);
 		TileEntityInit.TILE_ENTITIES.register(bus);
 		ContainerInit.CONTAINERS.register(bus);
 		EntityInit.ENTITIES.register(bus);
 		BiomeInit.BIOMES.register(bus);
+		RecipeInit.RECIPE_SERIALIZERS.register(bus);
+		WorldTypeInit.WORLD_TYPES.register(bus);
 	}
 
 	void setup(FMLCommonSetupEvent event) {

@@ -1,0 +1,10 @@
+{
+  "type": "minecraftmadness:chopping",
+  "input": {
+    "item": "minecraft:chicken"
+  },
+  "output": {
+    "item": "minecraftmadness:chicken_strip",
+    "count": 6
+  }
+}

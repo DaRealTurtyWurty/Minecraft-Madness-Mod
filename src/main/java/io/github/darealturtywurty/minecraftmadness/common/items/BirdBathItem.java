@@ -18,17 +18,17 @@ public class BirdBathItem extends BlockItem {
 	public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
 		super.inventoryTick(stack, worldIn, entityIn, itemSlot, isSelected);
 		if (entityIn != null) {
-			stack.getOrCreateChildTag("BiomeWaterColor").putInt("Color",
-					BiomeColors.getWaterColor(entityIn.getEntityWorld(), entityIn.getPosition()));
+			stack.getOrCreateTagElement("BiomeWaterColor").putInt("Color",
+					BiomeColors.getAverageWaterColor(entityIn.getCommandSenderWorld(), entityIn.blockPosition()));
 		} else {
-			stack.getOrCreateChildTag("BiomeWaterColor").putInt("Color", 0x3F76E4);
+			stack.getOrCreateTagElement("BiomeWaterColor").putInt("Color", 0x3F76E4);
 		}
 	}
 
 	@Override
 	public boolean onEntityItemUpdate(ItemStack stack, ItemEntity entity) {
-		stack.getOrCreateChildTag("BiomeWaterColor").putInt("Color",
-				BiomeColors.getWaterColor(entity.getEntityWorld(), entity.getPosition()));
+		stack.getOrCreateTagElement("BiomeWaterColor").putInt("Color",
+				BiomeColors.getAverageWaterColor(entity.getCommandSenderWorld(), entity.blockPosition()));
 		return super.onEntityItemUpdate(stack, entity);
 	}
 

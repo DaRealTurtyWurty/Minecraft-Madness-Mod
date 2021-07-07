@@ -1,0 +1,7 @@
+{
+  "parent": "minecraftmadness:block/chopping_board",
+  "textures": {
+    "log": "block/warped_stem",
+    "planks": "block/warped_planks"
+  }
+}

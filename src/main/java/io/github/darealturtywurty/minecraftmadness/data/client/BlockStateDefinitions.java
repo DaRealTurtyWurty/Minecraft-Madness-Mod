@@ -11,7 +11,8 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.minecraft.util.ResourceLocation;
 
-public abstract class BlockStateDefinitions {
+public abstract interface BlockStateDefinitions {
+	
 	/**
 	 * Creates and returns a VariantBlockStateDefinition for whom variants can be
 	 * defined. Once variants are added to the definition, giving this to a
@@ -21,7 +22,7 @@ public abstract class BlockStateDefinitions {
 	 * 
 	 * @return a mutable VariantBlockStateDefinition
 	 */
-	public static VariantBlockStateDefinition variantBuilder() {
+	static VariantBlockStateDefinition variantBuilder() {
 		return new VariantBlockStateDefinition(new HashMap<>());
 	}
 
@@ -34,7 +35,7 @@ public abstract class BlockStateDefinitions {
 	 * 
 	 * @return a mutable MultipartBlockStateDefinition
 	 */
-	public static MultipartBlockStateDefinition multipartBuilder() {
+	static MultipartBlockStateDefinition multipartBuilder() {
 		return new MultipartBlockStateDefinition(new ArrayList<>());
 	}
 

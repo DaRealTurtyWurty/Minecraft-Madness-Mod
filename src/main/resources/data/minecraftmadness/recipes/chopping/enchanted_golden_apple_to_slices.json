@@ -1,0 +1,10 @@
+{
+  "type": "minecraftmadness:chopping",
+  "input": {
+    "item": "minecraft:enchanted_golden_apple"
+  },
+  "output": {
+    "item": "minecraftmadness:enchanted_golden_apple_slice",
+    "count": 4
+  }
+}

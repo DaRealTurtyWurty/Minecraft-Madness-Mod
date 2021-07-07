@@ -43,7 +43,7 @@ public class JsonDataProvider<T> implements IDataProvider {
 	 * Used by the CodecDataProvider to determine whether to save jsons to the
 	 * assets or data folder
 	 */
-	public static enum ResourceType {
+	public enum ResourceType {
 		ASSETS("assets"), DATA("data");
 
 		public final String resourceFolder;
@@ -125,12 +125,13 @@ public class JsonDataProvider<T> implements IDataProvider {
 	 * this in their own act methods if they choose to do so.
 	 */
 	@Override
-	public void act(DirectoryCache cache) throws IOException {
+	public void run(DirectoryCache cache) throws IOException {
 		Path resourcesFolder = this.generator.getOutputFolder();
 		this.objects.forEach((id, object) -> {
 			Path jsonLocation = this.getPath(resourcesFolder, id);
 			this.codec.encodeStart(JsonOps.INSTANCE, object)
-					.resultOrPartial(s -> LOGGER.error("Failed to encode {}", jsonLocation, s)).ifPresent(jsonElement -> {
+					.resultOrPartial(s -> LOGGER.error("Failed to encode: {} \n {}", jsonLocation, s))
+					.ifPresent(jsonElement -> {
 						try {
 							IDataProvider.save(this.gson, cache, jsonElement, jsonLocation);
 						} catch (IOException e) {
@@ -154,5 +155,4 @@ public class JsonDataProvider<T> implements IDataProvider {
 	public String getName() {
 		return String.format("%s %s provider", this.folder, this.resourceType.resourceFolder);
 	}
-
 }

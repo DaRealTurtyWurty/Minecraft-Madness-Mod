@@ -1,0 +1,10 @@
+{
+  "type": "minecraftmadness:chopping",
+  "input": {
+    "item": "minecraft:bread"
+  },
+  "output": {
+    "item": "minecraftmadness:bread_chunk",
+    "count": 5
+  }
+}

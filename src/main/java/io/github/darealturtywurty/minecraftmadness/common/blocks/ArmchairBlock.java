@@ -1,6 +1,6 @@
 package io.github.darealturtywurty.minecraftmadness.common.blocks;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -9,6 +9,7 @@ import io.github.darealturtywurty.minecraftmadness.common.entities.SittableEntit
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalBlock;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.StateContainer.Builder;
@@ -27,45 +28,43 @@ import net.minecraft.world.World;
 
 public class ArmchairBlock extends HorizontalBlock {
 
-	static final VoxelShape BASE_SHAPE = Stream.of(Block.makeCuboidShape(2, 10, 3, 3, 11, 12),
-			Block.makeCuboidShape(13, 10, 3, 14, 11, 12), Block.makeCuboidShape(3, 5, 2, 13, 7, 3),
-			Block.makeCuboidShape(2, 5, 3, 14, 7, 14), Block.makeCuboidShape(2, 7, 12, 14, 16, 14),
-			Block.makeCuboidShape(2, 0, 2, 3, 11, 3), Block.makeCuboidShape(13, 0, 13, 14, 5, 14),
-			Block.makeCuboidShape(13, 0, 2, 14, 11, 3), Block.makeCuboidShape(2, 0, 13, 3, 5, 14)).reduce((v1, v2) -> {
-				return VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR);
-			}).get();
+	private static final VoxelShape BASE_SHAPE = Stream
+			.of(Block.box(2, 10, 3, 3, 11, 12), Block.box(13, 10, 3, 14, 11, 12), Block.box(3, 5, 2, 13, 7, 3),
+					Block.box(2, 5, 3, 14, 7, 14), Block.box(2, 7, 12, 14, 16, 14), Block.box(2, 0, 2, 3, 11, 3),
+					Block.box(13, 0, 13, 14, 5, 14), Block.box(13, 0, 2, 14, 11, 3), Block.box(2, 0, 13, 3, 5, 14))
+			.reduce((v1, v2) -> VoxelShapes.join(v1, v2, IBooleanFunction.OR)).get();
 
-	static final Map<Direction, VoxelShape> SHAPES = new HashMap<>();
+	private static final Map<Direction, VoxelShape> SHAPES = new EnumMap<>(Direction.class);
 
 	public ArmchairBlock(Properties builder) {
 		super(builder);
-		this.setDefaultState(this.stateContainer.getBaseState().with(HORIZONTAL_FACING, Direction.NORTH));
+		this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
 		runCalculation(BASE_SHAPE);
 	}
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		return this.getDefaultState().with(HORIZONTAL_FACING, context.getPlacementHorizontalFacing().getOpposite());
+		return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder) {
-		super.fillStateContainer(builder);
-		builder.add(HORIZONTAL_FACING);
+	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
+		super.createBlockStateDefinition(builder);
+		builder.add(FACING);
 	}
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		return SHAPES.get(state.get(HORIZONTAL_FACING));
+		return SHAPES.get(state.getValue(FACING));
 	}
 
 	protected static VoxelShape calculateShapes(Direction to, VoxelShape shape) {
 		VoxelShape[] buffer = new VoxelShape[] { shape, VoxelShapes.empty() };
 
-		int times = (to.getHorizontalIndex() - Direction.NORTH.getHorizontalIndex() + 4) % 4;
+		int times = (to.get2DDataValue() - Direction.NORTH.get2DDataValue() + 4) % 4;
 		for (int i = 0; i < times; i++) {
-			buffer[0].forEachBox((minX, minY, minZ, maxX, maxY, maxZ) -> buffer[1] = VoxelShapes.or(buffer[1],
-					VoxelShapes.create(1 - maxZ, minY, minX, 1 - minZ, maxY, maxX)));
+			buffer[0].forAllBoxes((minX, minY, minZ, maxX, maxY, maxZ) -> buffer[1] = VoxelShapes.or(buffer[1],
+					VoxelShapes.box(1 - maxZ, minY, minX, 1 - minZ, maxY, maxX)));
 			buffer[0] = buffer[1];
 			buffer[1] = VoxelShapes.empty();
 		}
@@ -80,12 +79,12 @@ public class ArmchairBlock extends HorizontalBlock {
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn,
+	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn,
 			BlockRayTraceResult hit) {
-		List<SittableEntity> seats = worldIn.getEntitiesWithinAABB(SittableEntity.class,
-				new AxisAlignedBB(pos, pos.add(1, 1, 1)));
-		if (!worldIn.isRemote()) {
-			if (seats.size() > 0) {
+		List<SittableEntity> seats = worldIn.getEntitiesOfClass(SittableEntity.class,
+				new AxisAlignedBB(pos, pos.offset(1, 1, 1)));
+		if (!worldIn.isClientSide()) {
+			if (!seats.isEmpty()) {
 				for (SittableEntity seat : seats) {
 					if (player.startRiding(seat)) {
 						return ActionResultType.SUCCESS;
@@ -93,9 +92,8 @@ public class ArmchairBlock extends HorizontalBlock {
 				}
 			} else {
 				SittableEntity seat = new SittableEntity(worldIn);
-				seat.setPositionAndRotation(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D,
-						state.get(HORIZONTAL_FACING).getHorizontalAngle(), 0.0f);
-				worldIn.addEntity(seat);
+				seat.absMoveTo(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, state.getValue(FACING).toYRot(), 0.0f);
+				worldIn.addFreshEntity(seat);
 				player.startRiding(seat);
 				return ActionResultType.SUCCESS;
 			}
@@ -105,10 +103,10 @@ public class ArmchairBlock extends HorizontalBlock {
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
-		List<SittableEntity> seats = worldIn.getEntitiesWithinAABB(SittableEntity.class,
-				new AxisAlignedBB(pos, pos.add(1, 1, 1)));
-		seats.forEach(seat -> seat.remove());
-		super.onReplaced(state, worldIn, pos, newState, isMoving);
+	public void onRemove(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+		List<SittableEntity> seats = worldIn.getEntitiesOfClass(SittableEntity.class,
+				new AxisAlignedBB(pos, pos.offset(1, 1, 1)));
+		seats.forEach(Entity::remove);
+		super.onRemove(state, worldIn, pos, newState, isMoving);
 	}
 }

@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "facing=east,board_type=wood": {
+      "y": 90,
+      "model": "minecraftmadness:block/spruce_chopping_board"
+    },
+    "facing=north,board_type=stone": {
+      "model": "minecraftmadness:block/spruce_chopping_board"
+    },
+    "facing=east,board_type=stone": {
+      "y": 90,
+      "model": "minecraftmadness:block/spruce_chopping_board"
+    },
+    "facing=south,board_type=stone": {
+      "y": 180,
+      "model": "minecraftmadness:block/spruce_chopping_board"
+    },
+    "facing=south,board_type=wood": {
+      "y": 180,
+      "model": "minecraftmadness:block/spruce_chopping_board"
+    },
+    "facing=west,board_type=wood": {
+      "y": 270,
+      "model": "minecraftmadness:block/spruce_chopping_board"
+    },
+    "facing=west,board_type=stone": {
+      "y": 270,
+      "model": "minecraftmadness:block/spruce_chopping_board"
+    },
+    "facing=north,board_type=wood": {
+      "model": "minecraftmadness:block/spruce_chopping_board"
+    }
+  }
+}

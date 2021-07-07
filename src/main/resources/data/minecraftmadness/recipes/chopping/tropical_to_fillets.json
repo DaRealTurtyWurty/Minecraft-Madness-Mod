@@ -1,0 +1,10 @@
+{
+  "type": "minecraftmadness:chopping",
+  "input": {
+    "item": "minecraft:tropical_fish"
+  },
+  "output": {
+    "item": "minecraftmadness:tropical_fillet",
+    "count": 2
+  }
+}

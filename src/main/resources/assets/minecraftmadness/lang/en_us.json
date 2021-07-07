@@ -136,5 +136,16 @@
 	"block.minecraftmadness.yellow_oak_armchair": "Yellow Oak Armchair",
 	"block.minecraftmadness.yellow_spruce_armchair": "Yellow Spruce Armchair",
 	"block.minecraftmadness.yellow_warped_armchair": "Yellow Warped Armchair",
-	"itemGroup.minecraftmadness": "Minecraft Madness Mod"
+	"block.minecraftmadness.oak_chopping_board": "Oak Chopping Board",
+	"block.minecraftmadness.dark_oak_chopping_board": "Dark Oak Chopping Board",
+	"block.minecraftmadness.birch_chopping_board": "Birch Chopping Board",
+	"block.minecraftmadness.spruce_chopping_board": "Spruce Chopping Board",
+	"block.minecraftmadness.jungle_chopping_board": "Jungle Chopping Board",
+	"block.minecraftmadness.acacia_chopping_board": "Acacia Chopping Board",
+	"block.minecraftmadness.warped_chopping_board": "Warped Chopping Board",
+	"block.minecraftmadness.crimson_chopping_board": "Crimson Chopping Board",
+	"block.minecraftmadness.stone_chopping_board": "Stone Chopping Board",
+	"item.minecraftmadness.knife": "Knife",
+	"itemGroup.minecraftmadness": "Minecraft Madness Mod",
+	"generator.minecraftmadness.madness": "Madness"
 }

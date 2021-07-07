@@ -1,0 +1,10 @@
+{
+  "type": "minecraftmadness:chopping",
+  "input": {
+    "item": "minecraft:cooked_porkchop"
+  },
+  "output": {
+    "item": "minecraftmadness:cooked_bacon",
+    "count": 3
+  }
+}

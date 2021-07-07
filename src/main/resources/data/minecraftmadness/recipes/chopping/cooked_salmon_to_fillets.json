@@ -1,0 +1,10 @@
+{
+  "type": "minecraftmadness:chopping",
+  "input": {
+    "item": "minecraft:cooked_salmon"
+  },
+  "output": {
+    "item": "minecraftmadness:cooked_salmon_fillet",
+    "count": 2
+  }
+}
